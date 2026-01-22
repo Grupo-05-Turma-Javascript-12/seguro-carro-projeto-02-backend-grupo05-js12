@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -26,6 +25,7 @@ export class Usuario {
   @Column({ length: 150, nullable: false })
   senha: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   @OneToMany(() => Produtos, (produtos) => produtos.usuario)
   produto: Produtos[];
 

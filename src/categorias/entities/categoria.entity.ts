@@ -18,6 +18,7 @@ export class Categorias {
   @Column({ length: 500, nullable: true })
   descricao: string;
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   @ManyToOne(() => Produtos, (produtos) => produtos.categoria)
-  produto: Produtos[]
+  produto: Produtos[];
 }
