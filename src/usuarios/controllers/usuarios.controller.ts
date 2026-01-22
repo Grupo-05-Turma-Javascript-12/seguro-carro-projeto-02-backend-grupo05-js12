@@ -34,7 +34,7 @@ export class UsuariosController {
     return this.usuariosService.createUser(usuario);
   }
 
-  @Put('/:id')
+  @Put()
   updateUser(@Body() usuario: Usuario): Promise<Usuario> {
     return this.usuariosService.updateUser(usuario);
   }
