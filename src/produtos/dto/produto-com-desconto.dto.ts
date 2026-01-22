@@ -1,6 +1,6 @@
 export class ProdutoComDescontoDTO {
-    id: number;
-    nome: string;
-    precoOriginal: number;
-    precoComDesconto: number;
+  id: number;
+  nome: string;
+  precoOriginal: number;
+  precoComDesconto: number;
 }

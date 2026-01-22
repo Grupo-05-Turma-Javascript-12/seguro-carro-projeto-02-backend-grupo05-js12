@@ -9,36 +9,33 @@ export class ProdutosService {
   constructor(
     @InjectRepository(Produtos)
     private produtosRepository: Repository<Produtos>,
-  ) { }
+  ) {}
   async getAllProducts(): Promise<Produtos[]> {
     return await this.produtosRepository.find({
-      relations: { categoria: true }
+      relations: { categoria: true },
     });
   }
   async getProductById(id: number): Promise<Produtos> {
     const produto = await this.produtosRepository.findOne({
       where: { id },
-      relations: { categoria: true }
+      relations: { categoria: true },
     });
     if (!produto)
       throw new HttpException('Produto não encontrado!', HttpStatus.NOT_FOUND);
     return produto;
   }
   async getDiscountByCarYear(ano: number): Promise<ProdutoComDescontoDTO[]> {
-
     const desconto = ano <= 2005 ? 0.2 : ano <= 2015 ? 0.1 : 0.05;
 
     const produtos = await this.produtosRepository.find({
-      relations: { categoria: true }
+      relations: { categoria: true },
     });
-    return produtos.map(produto => ({
+    return produtos.map((produto) => ({
       id: produto.id,
       nome: produto.nome,
       categoria: produto.categoria,
       precoOriginal: produto.preco,
-      precoComDesconto: Number(
-        (produto.preco * (1 - desconto)).toFixed(2)
-      )
+      precoComDesconto: Number((produto.preco * (1 - desconto)).toFixed(2)),
     }));
   }
 
