@@ -3,8 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Produtos } from '../../produtos/entities/produto.entity';
 
 @Entity(`tb_usuarios`)
 export class Usuario {
@@ -23,9 +26,8 @@ export class Usuario {
   @Column({ length: 150, nullable: false })
   senha: string;
 
-  @IsNotEmpty()
-  @Column({ length: 150, nullable: false })
-  carro: string;
+  @OneToMany(() => Produtos, (produtos) => produtos.usuario)
+  produto: Produtos[];
 
   @Column({ type: `int`, nullable: true })
   ano: string;
