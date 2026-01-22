@@ -1,98 +1,205 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Sistema de Seguro de Carro – SeguroCarro
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descrição Geral
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+O **SeguroCarro** é um sistema para gerenciamento de usuários, produtos e categorias relacionados a seguros de automóveis.  
+A aplicação permite o cadastro de usuários com informações do veículo, a gestão de produtos de seguro e suas categorias, além de consultas específicas como listagem de produtos ativos e cálculo de descontos com base no ano do carro.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Regras de Negócio
 
-## Project setup
+### Usuários
 
-```bash
-$ npm install
+- Nome, email, senha e carro são obrigatórios
+- O email deve ser único por usuário
+- O ano do carro deve ser válido (não pode ser futuro)
+- A data de cadastro é gerada automaticamente pelo sistema
+- Um usuário pode estar associado a produtos de seguro
+
+### Produtos
+
+- Nome e preço são obrigatórios
+- O preço não pode ser negativo
+- Produtos são criados como ativos por padrão
+- Produtos podem estar associados a categorias
+- Apenas produtos ativos devem aparecer nas listagens padrão
+
+### Categorias
+
+- Nome é obrigatório
+- Uma categoria pode estar associada a vários produtos
+
+---
+
+## Identidade das Entidades
+
+- O ID é único, automático e gerado pelo banco de dados
+- O ID não pode ser alterado
+- Entidades podem possuir nomes iguais, desde que tenham IDs diferentes
+
+---
+
+## Entidades e Atributos
+
+### Entidade: Usuário (`tb_usuarios`)
+
+| Campo          | Tipo           | Restrições |
+|---------------|----------------|------------|
+| id            | INT            | PK, AI     |
+| nome          | VARCHAR(255)   | NOT NULL   |
+| email         | VARCHAR(255)   | NOT NULL   |
+| senha         | VARCHAR(150)   | NOT NULL   |
+| carro         | VARCHAR(150)   | NOT NULL   |
+| ano           | INT            | —          |
+| data_cadastro | DATE           | AUTO       |
+| produtos      | INT            | FK         |
+
+---
+
+### Entidade: Produto (`tb_produtos`)
+
+| Campo       | Tipo          | Restrições        |
+|------------|---------------|-------------------|
+| id         | INT           | PK, AI            |
+| nome       | VARCHAR(255)  | NOT NULL          |
+| descricao  | VARCHAR(500)  | —                 |
+| preco      | DECIMAL(10,2) | NOT NULL          |
+| esta_ativo | BOOLEAN       | DEFAULT TRUE      |
+
+---
+
+### Entidade: Categoria (`tb_categorias`)
+
+| Campo      | Tipo          | Restrições |
+|-----------|---------------|------------|
+| id        | INT           | PK, AI     |
+| nome      | VARCHAR(255)  | NOT NULL   |
+| descricao | VARCHAR(500)  | —          |
+
+---
+
+## Funcionalidades Principais (CRUD)
+
+### Usuários
+
+- **getAllUsers**: Retorna todos os usuários cadastrados
+- **getUserByEmail**: Busca um usuário pelo email
+- **createUser**: Cria um novo usuário
+- **updateUser**: Atualiza os dados de um usuário existente
+- **deleteUser**: Remove um usuário do sistema
+
+### Produtos
+
+- **getAllProducts**: Retorna todos os produtos
+- **getProductById**: Busca um produto pelo ID
+- **getDiscountByCarYear**: Calcula desconto com base no ano do veículo
+- **getActiveProducts**: Retorna apenas produtos ativos
+- **createProduct**: Cria um novo produto
+- **updateProduct**: Atualiza um produto existente
+- **deleteProduct**: Remove um produto
+
+### Categorias
+
+- **getAllCategories**: Retorna todas as categorias
+- **getUserByCategory**: Retorna produtos associados a uma categoria
+- **createCategory**: Cria uma nova categoria
+- **updateCategory**: Atualiza uma categoria
+- **deleteCategory**: Remove uma categoria
+
+---
+
+## Endpoints
+
+### Usuários
+
+```http
+GET    /usuarios
+GET    /usuarios/email/:email
+POST   /usuarios
+PUT    /usuarios/:id
+DELETE /usuarios/:id
 ```
 
-## Compile and run the project
+### Produtos
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```http
+GET    /produtos
+GET    /produtos/:id
+GET    /produtos/ativos
+GET    /produtos/desconto/:ano
+POST   /produtos
+PUT    /produtos/:id
+DELETE /produtos/:id
 ```
 
-## Run tests
+### Categorias
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```http
+GET    /categorias
+GET    /categorias/:id/produtos
+POST   /categorias
+PUT    /categorias/:id
+DELETE /categorias/:id
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## Tecnologias Utilizadas
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- Banco de Dados: SQL
+- Back-end: NestJS
+- ORM: TypeORM
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+---
+
+## Banco de Dados – Script SQL
+
+```sql
+CREATE DATABASE IF NOT EXISTS db_segurocarro
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE db_segurocarro;
+
+CREATE TABLE tb_produtos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  descricao VARCHAR(500),
+  preco DECIMAL(10,2) NOT NULL,
+  esta_ativo BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE tb_categorias (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  descricao VARCHAR(500)
+);
+
+CREATE TABLE tb_usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  senha VARCHAR(150) NOT NULL,
+  carro VARCHAR(150) NOT NULL,
+  ano INT,
+  data_cadastro DATE,
+  produtos INT,
+  FOREIGN KEY (produtos) REFERENCES tb_produtos(id)
+);
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## Etapas do Projeto
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- Criação do banco de dados
+- Criação do repositório no GitHub
+- Modelagem do DER
+- Configuração do banco no NestJS
+- Criação das Entities
+- Desenvolvimento dos Services
+- Desenvolvimento dos Controllers
+- Testes no Insomnia
+- Documentação
+- Revisão e finalização
