@@ -1,15 +1,16 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 import {
+  Check,
   Column,
-  CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Produtos } from '../../produtos/entities/produto.entity';
 
 @Entity(`tb_usuarios`)
+@Check('"ano" <= 2027')
 export class Usuario {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,6 +20,7 @@ export class Usuario {
   nome: string;
 
   @IsNotEmpty()
+  @IsEmail()
   @Column({ length: 255, nullable: false })
   email: string;
 
@@ -26,12 +28,15 @@ export class Usuario {
   @Column({ length: 150, nullable: false })
   senha: string;
 
+  @Column({ length: 150, nullable: false })
+  carro: string;
+
+  @Column({ type: 'int', nullable: true })
+  ano: number;
+
+  @UpdateDateColumn()
+  data_cadastro: Date;
+
   @OneToMany(() => Produtos, (produtos) => produtos.usuario)
   produto: Produtos[];
-
-  @Column({ type: `int`, nullable: true })
-  ano: string;
-
-  @CreateDateColumn()
-  data_cadastro: Date;
 }

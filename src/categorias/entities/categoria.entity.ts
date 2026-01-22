@@ -19,5 +19,5 @@ export class Categorias {
   descricao: string;
 
   @ManyToOne(() => Produtos, (produtos) => produtos.categoria)
-  produto: Produtos[]
+  produto: Produtos[];
 }
