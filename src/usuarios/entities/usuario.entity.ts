@@ -28,9 +28,6 @@ export class Usuario {
   @Column({ length: 150, nullable: false })
   senha: string;
 
-<<<<<<< HEAD
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-=======
   @Column({ length: 150, nullable: false })
   carro: string;
 
@@ -40,7 +37,6 @@ export class Usuario {
   @UpdateDateColumn()
   data_cadastro: Date;
 
->>>>>>> 0dee7c8b832f8e39f76a3788335f06db14718a92
   @OneToMany(() => Produtos, (produtos) => produtos.usuario)
   produto: Produtos[];
 }
