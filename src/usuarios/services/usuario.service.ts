@@ -21,11 +21,14 @@ export class UsuarioService {
   }
 
   async getAllUsers(): Promise<Usuario[]> {
-    return await this.usuarioRepository.find();
+    return await this.usuarioRepository.find({ relations: { produto: true } });
   }
 
   async getUserById(id: number): Promise<Usuario> {
-    const usuario = await this.usuarioRepository.findOneBy({ id });
+    const usuario = await this.usuarioRepository.findOne({
+      where: { id },
+      relations: { produto: true },
+    });
 
     if (!usuario) {
       throw new NotFoundException(`Usuário com ID ${id} não encontrado.`);

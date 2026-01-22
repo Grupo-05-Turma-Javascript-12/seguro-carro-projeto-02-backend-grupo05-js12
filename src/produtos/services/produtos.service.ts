@@ -12,13 +12,13 @@ export class ProdutosService {
   ) {}
   async getAllProducts(): Promise<Produtos[]> {
     return await this.produtosRepository.find({
-      relations: { categoria: true, usuario: true },
+      relations: { categoria: true },
     });
   }
   async getProductById(id: number): Promise<Produtos> {
     const produto = await this.produtosRepository.findOne({
       where: { id },
-      relations: { categoria: true, usuario: true },
+      relations: { categoria: true },
     });
     if (!produto)
       throw new HttpException('Produto não encontrado!', HttpStatus.NOT_FOUND);
@@ -28,7 +28,7 @@ export class ProdutosService {
     const desconto = ano <= 2005 ? 0.2 : ano <= 2015 ? 0.1 : 0.05;
 
     const produtos = await this.produtosRepository.find({
-      relations: { categoria: true, usuario: true },
+      relations: { categoria: true },
     });
     return produtos.map((produto) => ({
       id: produto.id,

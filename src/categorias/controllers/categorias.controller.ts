@@ -31,7 +31,7 @@ export class CategoriasController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createCategory(@Param() categorias: Categorias): Promise<Categorias> {
+  createCategory(@Body() categorias: Categorias): Promise<Categorias> {
     return this.categoriasService.createCategory(categorias);
   }
 
