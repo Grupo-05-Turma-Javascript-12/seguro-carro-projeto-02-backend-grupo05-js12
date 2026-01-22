@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Produtos } from '../../produtos/entities/produto.entity';
 
 // Define a entidade Categoria mapeada para a tabela 'tb_categorias'
 @Entity({ name: 'tb_categorias' })
@@ -16,4 +17,7 @@ export class Categorias {
   //Cria a coluna descricao do tipo string com tamanho maximo de 500 caracteres e nula
   @Column({ length: 500, nullable: true })
   descricao: string;
+
+  @ManyToOne(() => Produtos, (produtos) => produtos.categoria)
+  produto: Produtos[]
 }
