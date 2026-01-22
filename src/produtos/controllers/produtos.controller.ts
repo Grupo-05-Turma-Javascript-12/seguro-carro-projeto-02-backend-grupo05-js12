@@ -24,10 +24,10 @@ export class ProdutosController {
     return this.produtosService.getAllProducts();
   }
 
-  @Get('/:id')
+  @Get('/ativos')
   @HttpCode(HttpStatus.OK)
-  getProductById(@Param('id', ParseIntPipe) id: number): Promise<Produtos> {
-    return this.produtosService.getProductById(id);
+  getActiveProducts(): Promise<Produtos[]> {
+    return this.produtosService.getActiveProducts();
   }
 
   @Get('/descontos/:ano')
@@ -38,10 +38,10 @@ export class ProdutosController {
     return this.produtosService.getDiscountByCarYear(ano);
   }
 
-  @Get('/ativos')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  getActiveProducts(): Promise<Produtos[]> {
-    return this.produtosService.getActiveProducts();
+  getProductById(@Param('id', ParseIntPipe) id: number): Promise<Produtos> {
+    return this.produtosService.getProductById(id);
   }
 
   @Post()

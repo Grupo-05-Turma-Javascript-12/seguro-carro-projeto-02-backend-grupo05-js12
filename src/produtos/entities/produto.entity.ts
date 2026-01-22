@@ -30,7 +30,8 @@ export class Produtos {
   preco: number;
 
   //Cria a coluna esta_ativo do tipo booleano, com valor padrão true
-  @Column({ type: 'boolean', default: true })
+  @IsNotEmpty()
+  @Column({ type: 'boolean', nullable: false })
   esta_ativo: boolean;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.produto, {
