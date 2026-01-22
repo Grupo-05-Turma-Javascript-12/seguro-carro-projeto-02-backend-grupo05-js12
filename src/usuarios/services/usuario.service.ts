@@ -6,6 +6,25 @@ import { Usuario } from '../entities/usuario.entity';
 //tranforma em servico do nest
 @Injectable()
 export class UsuarioService {
+  deleteUser(id: number): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  updateUser(usuario: Usuario): Promise<Usuario> {
+    throw new Error('Method not implemented.');
+  }
+  //(buscar por id) + tratar quando não existe
+  createUser(usuario: Usuario): Promise<Usuario> {
+    throw new Error('Method not implemented.');
+  }
+  getUserByEmail(email: string): Promise<Usuario> {
+    throw new Error('Method not implemented.');
+  }
+  getUserById(id: number): Promise<Usuario> {
+    throw new Error('Method not implemented.');
+  }
+  getAllUsers(): Promise<Usuario[]> {
+    throw new Error('Method not implemented.');
+  }
   //conecta o service na tabela
   constructor(
     @InjectRepository(Usuario)
