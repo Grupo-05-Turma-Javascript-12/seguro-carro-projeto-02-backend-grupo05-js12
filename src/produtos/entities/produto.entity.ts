@@ -1,5 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Usuario } from '../../usuarios/entities/usuario.entity';
+import { Categorias } from '../../categorias/entities/categoria.entity';
 
 @Entity({ name: 'tb_produtos' })
 export class Produtos {
@@ -24,4 +26,10 @@ export class Produtos {
   //Cria a coluna esta_ativo do tipo booleano, com valor padrão true
   @Column({ type: `boolean`, default: true })
   esta_ativo: boolean;
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.produto, { onDelete: 'CASCADE' })
+  usuario: Usuario
+
+  @ManyToOne(() => Categorias, (categoria) => categoria.produto, { onDelete: 'CASCADE' })
+  categoria: Categorias
 }
