@@ -1,4 +1,4 @@
-import {
+/* import {
   Controller,
   Get,
   Post,
@@ -54,3 +54,4 @@ export class UsuariosController {
     return this.usuariosService.deleteUser(id);
   }
 }
+ */

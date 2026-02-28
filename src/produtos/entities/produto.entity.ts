@@ -40,13 +40,13 @@ export class Produtos {
   @ApiProperty()
   esta_ativo: boolean;
 
-  @ApiProperty()
+ /*  @ApiProperty()
   @ManyToOne(() => Usuario, (usuario) => usuario.produto, {
     onDelete: 'CASCADE',
     nullable: false,
   })
   @JoinColumn({ name: 'usuario_id' })
-  usuario: Usuario;
+  usuario: Usuario; */
 
   @ApiProperty()
   @ManyToOne(() => Categorias, (categoria) => categoria.produto, {

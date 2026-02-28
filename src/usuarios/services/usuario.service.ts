@@ -1,4 +1,4 @@
-import {
+/* import {
   HttpException,
   HttpStatus,
   Injectable,
@@ -54,3 +54,4 @@ export class UsuarioService {
     return await this.usuarioRepository.delete(id);
   }
 }
+ */

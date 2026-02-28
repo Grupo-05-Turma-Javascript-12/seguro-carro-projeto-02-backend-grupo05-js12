@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+/* import { IsEmail, IsNotEmpty } from 'class-validator';
 import {
   Check,
   Column,
@@ -49,3 +49,4 @@ export class Usuario {
   @OneToMany(() => Produtos, (produtos) => produtos.usuario)
   produto: Produtos[];
 }
+ */

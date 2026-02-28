@@ -4,13 +4,13 @@ import { Produtos } from './entities/produto.entity';
 import { ProdutosService } from './services/produtos.service';
 import { ProdutosController } from './controllers/produtos.controller';
 import { CategoriasModule } from '../categorias/categorias.module';
-import { UsuarioModule } from '../usuarios/usuarios.module';
+// import { UsuarioModule } from '../usuarios/usuarios.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Produtos]),
     CategoriasModule,
-    UsuarioModule,
+    /* UsuarioModule, */
   ],
   providers: [ProdutosService],
   controllers: [ProdutosController],
